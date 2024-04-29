@@ -3,14 +3,11 @@ import streamlit as st
 import plotly.express as px
 
 # Load the London Pubs dataset
-@st.cache
 def load_data():
     return pd.read_excel("open_pubs_10000_sample.xlsx")
 
-df = load_data()
-
 # Function to filter pubs by local authority and display on map
-def display_pubs_by_authority(authority_name):
+def display_pubs_by_authority(authority_name, df):
     authority_pubs = df[df['local_authority'] == authority_name]
 
     # Check if 'name' column exists in the dataset
@@ -29,11 +26,14 @@ def display_pubs_by_authority(authority_name):
 def main():
     st.title("London Pubs Explorer")
 
+    # Load the data
+    df = load_data()
+
     # Sidebar input for local authority
     authority_name = st.sidebar.text_input("Enter Local Authority", "Westminster")
 
     if st.sidebar.button("Show Pubs"):
-        display_pubs_by_authority(authority_name)
+        display_pubs_by_authority(authority_name, df)
 
 if __name__ == "__main__":
     main()
