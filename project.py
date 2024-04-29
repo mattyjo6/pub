@@ -53,10 +53,9 @@ def main():
         if pub_name and authority_name:  # Check if both pub name and authority are provided
             filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & 
                              (df['local_authority'] == authority_name)]
-            # Update the map by replacing the existing traces with new data
-            fig.data = []
-            fig.add_trace(px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
-                                             text="address", zoom=10, height=500).data[0])
+            # Update existing traces with new data
+            fig.update_traces(lat=filtered_df['latitude'], lon=filtered_df['longitude'],
+                              customdata=filtered_df[['name', 'address']])
             st.plotly_chart(fig)  # Display the updated map
         else:
             st.warning("Please enter both Pub Name and Local Authority.")
@@ -67,6 +66,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
