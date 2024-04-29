@@ -5,8 +5,12 @@ import plotly.express as px
 # [PY1] A function with two or more parameters, one of which has a default value
 def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
-    return pd.read_excel(file_path, header=None,
-                         names=['id', 'name', 'address', 'postcode', 'easting', 'northing', 'latitude', 'longitude', 'local_authority'])
+    df = pd.read_excel(file_path, header=None,
+                       names=['id', 'name', 'address', 'postcode', 'easting', 'northing', 'latitude', 'longitude',
+                              'local_authority'])
+    # Drop rows with missing values
+    df.dropna(inplace=True)
+    return df
 
 # [DA1]
 def clean_data(df):
