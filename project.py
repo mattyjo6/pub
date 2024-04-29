@@ -92,10 +92,12 @@ def main():
     st.map(df)
 
 
-if __name__ == "__main__":
-    main()
+def get_local_authority_options(df):
+    """Get local authority options for selectbox."""
+    return {authority: authority for authority in df['local_authority'].unique()}
 
 
 if __name__ == "__main__":
     main()
+
 
