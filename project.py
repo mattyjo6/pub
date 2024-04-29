@@ -17,22 +17,15 @@ def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
     df.dropna(inplace=True)
+
+    # Drop rows with null latitude or longitude values
+    df = df[(df['latitude'].notnull()) & (df['longitude'].notnull())]
+
     # Convert latitude and longitude columns to numeric
-    try:
-        df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
-        df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
-    except ValueError as e:
-        print("Error converting latitude or longitude to numeric:")
-        print(e)
-        print("Problematic latitude values:")
-        print(df[df['latitude'].apply(lambda x: not isinstance(x, (float, int)))]['latitude'])
-        print("Problematic longitude values:")
-        print(df[df['longitude'].apply(lambda x: not isinstance(x, (float, int)))]['longitude'])
-        # Handle the error accordingly
+    df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
+    df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+
     return df
-
-
-
 
 
 
