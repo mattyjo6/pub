@@ -7,7 +7,7 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
     return pd.read_excel(file_path, header=None, names=['id', 'name', 'address', 'postcode', 'easting', 'northing', 'latitude', 'longitude', 'local_authority'])
 # [DA1]
-# [DA1]
+
 def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
@@ -25,6 +25,7 @@ def clean_data(df):
         print(df[df['longitude'].apply(lambda x: not isinstance(x, str))]['longitude'])
         # Handle the error accordingly
     return df
+
 
 
 
