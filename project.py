@@ -26,16 +26,6 @@ def filter_pubs_by_authority(df, authority_name):
     """Filter pubs by local authority."""
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
 
-# [PY3] A function that returns a value and is called in at least two different places in your program
-def display_pubs(fig, df, filtered_df=None):
-    """Update the existing map with pubs."""
-    # Update the map traces with new data
-    if filtered_df is not None:
-        fig.data[0].update(lat=filtered_df["latitude"], lon=filtered_df["longitude"], 
-                           text=filtered_df["name"], hoverinfo="text")
-    else:
-        fig.data[0].update(lat=df["latitude"], lon=df["longitude"], text=df["name"], hoverinfo="text")
-
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
@@ -51,9 +41,6 @@ def main():
     # Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=df['local_authority'].unique())
 
-    # [DA2] Sorting data in ascending or descending order, by one or more columns
-    sorted_df = df.sort_values(by='name', ascending=True)
-
     # [ST4] Page design features
     st.sidebar.header("Explore London Pubs")
     st.sidebar.write("Select a local authority to view pubs on the map.")
@@ -66,7 +53,11 @@ def main():
         if pub_name and authority_name:  # Check if both pub name and authority are provided
             filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & 
                              (df['local_authority'] == authority_name)]
-            display_pubs(fig, df, filtered_df)  # Pass the existing map (fig) along with the DataFrames
+            # Update the map by replacing the existing traces with new data
+            fig.data = []
+            fig.add_trace(px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
+                                             text="address", zoom=10, height=500).data[0])
+            st.plotly_chart(fig)  # Display the updated map
         else:
             st.warning("Please enter both Pub Name and Local Authority.")
 
@@ -76,7 +67,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
