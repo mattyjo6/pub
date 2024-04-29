@@ -8,25 +8,26 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
     df = pd.read_excel(file_path)
     return df
 
-
 # [DA1]
 def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
     df.dropna(inplace=True)
 
-    # Drop rows with null latitude or longitude values
-    df = df[(df['latitude'].notnull()) & (df['longitude'].notnull())]
-
     # Convert latitude and longitude columns to numeric
     df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
     df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+    print("Null values in latitude column after cleaning:", df['latitude'].isnull().sum())
 
     return df
 
 
+
+
+
 df = load_data()
 df = clean_data(df)
+
 
 # [PY2] A function that returns more than one value
 def filter_pubs_by_authority(df, authority_name):
@@ -42,13 +43,18 @@ def display_pubs(df):
     # Display the map
     st.plotly_chart(fig)
 
-def display_filtered_pubs(df, authority_name):
-    """Display filtered pubs on an interactive map."""
+
+def filter_pubs_by_authority(df, authority_name):
+    """Filter pubs by local authority."""
     filtered_df, _ = filter_pubs_by_authority(df, authority_name)
-    # Convert latitude and longitude columns to strings
-    filtered_df['latitude'] = filtered_df['latitude'].astype(str)
-    filtered_df['longitude'] = filtered_df['longitude'].astype(str)
-    display_pubs(filtered_df)
+    # Ensure latitude and longitude columns are numeric
+    filtered_df['latitude'] = pd.to_numeric(filtered_df['latitude'], errors='coerce')
+    filtered_df['longitude'] = pd.to_numeric(filtered_df['longitude'], errors='coerce')
+    # Drop rows with null latitude or longitude values
+    filtered_df = filtered_df.dropna(subset=['latitude', 'longitude'])
+    return filtered_df, df['local_authority'].unique()
+
+
 
 
 # [PY4] A list comprehension
@@ -56,10 +62,12 @@ def get_local_authorities(df):
     """Get unique local authorities."""
     return [authority for authority in df['local_authority'].unique()]
 
+
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for selectbox."""
     return {authority: authority for authority in df['local_authority'].unique()}
+
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
@@ -75,13 +83,13 @@ def main():
     st.sidebar.header("Explore London Pubs")
     st.sidebar.write("Select a local authority to view pubs on the map.")
     st.sidebar.write("You can also filter pubs by name.")
-    
+
     # [ST1] Dropdown widget
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
-        display_filtered_pubs(df, authority_name)
+        filter_pubs_by_authority(df, authority_name)
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
@@ -94,6 +102,7 @@ def main():
     # [VIZ4] Detailed map
     st.subheader("Detailed Map of London Pubs")
     st.map(df)
+
 
 if __name__ == "__main__":
     main()
