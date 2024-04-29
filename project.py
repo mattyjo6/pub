@@ -5,8 +5,9 @@ import plotly.express as px
 # [PY1] A function with two or more parameters, one of which has a default value
 def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
-    df = pd.read_excel(file_path, header=True)
+    df = pd.read_excel(file_path)
     return df
+
 
 # [DA1]
 def clean_data(df):
