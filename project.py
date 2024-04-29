@@ -56,14 +56,11 @@ def main():
     # [DA2] Sorting data in ascending or descending order, by one or more columns
     sorted_df = df.sort_values(by='name', ascending=True)
 
-    # [DA3] Top largest or smallest values of a column
-    top_pubs = df.nlargest(5, 'population')
-
     # [ST4] Page design features
     st.sidebar.header("Explore London Pubs")
     st.sidebar.write("Select a local authority to view pubs on the map.")
     st.sidebar.write("You can also filter pubs by name.")
-
+    
     # [ST1] Dropdown widget
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
@@ -76,8 +73,9 @@ def main():
     display_pubs(df)
 
     # [VIZ1] Bar chart
-    st.subheader("Top 5 Pubs by Population")
-    st.bar_chart(top_pubs['population'])
+    st.subheader("Top 5 Pubs by Rating")
+    top_pubs = df.nlargest(5, 'rating')
+    st.bar_chart(top_pubs['rating'])
 
     # [VIZ2] Pie chart
     st.subheader("Distribution of Pubs by Local Authority")
