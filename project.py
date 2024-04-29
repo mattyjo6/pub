@@ -35,7 +35,6 @@ def display_pubs(fig, df, filtered_df=None):
                                          text="address", zoom=10, height=500).data[0])
     # No need to create a new map; the existing map (fig) will be updated
 
-
 def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
     """Filter pubs by name and local authority."""
     filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & 
@@ -60,6 +59,10 @@ def main():
     df = load_data()
     df = clean_data(df)
 
+    # Create an interactive map using Plotly
+    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig.update_layout(mapbox_style="open-street-map")
+
     # Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
 
@@ -82,10 +85,9 @@ def main():
         else:
             st.warning("Please enter both Pub Name and Local Authority.")
 
-
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
-    display_pubs(df)
+    st.plotly_chart(fig)  # Display the map
 
     # [VIZ2] Pie chart
     st.subheader("Distribution of Pubs by Local Authority")
