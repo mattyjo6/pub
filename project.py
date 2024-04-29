@@ -89,11 +89,6 @@ def main():
     st.subheader("Map of London Pubs")
     display_pubs(df)
 
-    # [VIZ1] Bar chart
-    st.subheader("Top 5 Pubs by Rating")
-    top_pubs = df.nlargest(5, 'rating')
-    st.bar_chart(top_pubs['rating'])
-
     # [VIZ2] Pie chart
     st.subheader("Distribution of Pubs by Local Authority")
     st.write(px.pie(df, names='local_authority'))
