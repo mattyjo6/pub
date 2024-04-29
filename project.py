@@ -94,7 +94,7 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df, _ = filter_pubs_by_name(df, pub_name)
-    display_pubs(filtered_df)
+        display_pubs(filtered_df)
 
 
 
