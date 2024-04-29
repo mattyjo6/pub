@@ -35,13 +35,24 @@ def filter_pubs_by_authority(df, authority_name):
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
-def display_pubs(df):
+# [PY3] A function that returns a value and is called in at least two different places in your program
+def display_pubs(df, filtered_df=None):
     """Display pubs on an interactive map."""
     # Create an interactive map using Plotly
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
+    
+    if filtered_df is not None:
+        # Add a marker for the filtered pub
+        filtered_fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
+                                         text="address", zoom=10, height=500)
+        # Update the marker properties
+        filtered_fig.update_traces(marker=dict(size=12, opacity=0.8, color='red'), selector=dict(mode='markers'))
+        fig.add_trace(filtered_fig.data[0])
+    
     # Display the map
     st.plotly_chart(fig)
+
     
 def filter_pubs_by_name(df, pub_name):
     """Filter pubs by name."""
