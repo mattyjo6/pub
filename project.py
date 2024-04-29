@@ -11,10 +11,13 @@ def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
     df.dropna(subset=['latitude', 'longitude'], inplace=True)
-    # Convert latitude and longitude columns to numeric
+    # Convert latitude and longitude columns to numeric, handling errors gracefully
     df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
     df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+    # Drop rows where latitude or longitude is not numeric
+    df = df.dropna(subset=['latitude', 'longitude'])
     return df
+
 
 
 df = load_data()
