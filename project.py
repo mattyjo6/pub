@@ -6,13 +6,16 @@ import plotly.express as px
 def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
     return pd.read_excel(file_path, header=None, names=['id', 'name', 'address', 'postcode', 'easting', 'northing', 'latitude', 'longitude', 'local_authority'])
-
-# [DA1] Cleaning or manipulating data
+# [DA1]
 def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
-    df.dropna(inplace=True)
+    df.dropna(subset=['latitude', 'longitude'], inplace=True)
+    # Convert latitude and longitude columns to numeric
+    df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
+    df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
     return df
+
 
 df = load_data()
 df = clean_data(df)
