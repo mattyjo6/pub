@@ -7,24 +7,24 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
     return pd.read_excel(file_path, header=None, names=['id', 'name', 'address', 'postcode', 'easting', 'northing', 'latitude', 'longitude', 'local_authority'])
 # [DA1]
-
 def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
     df.dropna(inplace=True)
     # Convert latitude and longitude columns to numeric
     try:
-        df['latitude'] = df['latitude'].apply(lambda x: float(x.split()[0]))
+        df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
         df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
-    except (ValueError, IndexError) as e:
+    except ValueError as e:
         print("Error converting latitude or longitude to numeric:")
         print(e)
         print("Problematic latitude values:")
-        print(df[df['latitude'].apply(lambda x: not isinstance(x, str))]['latitude'])
+        print(df[df['latitude'].apply(lambda x: not isinstance(x, (float, int)))]['latitude'])
         print("Problematic longitude values:")
-        print(df[df['longitude'].apply(lambda x: not isinstance(x, str))]['longitude'])
+        print(df[df['longitude'].apply(lambda x: not isinstance(x, (float, int)))]['longitude'])
         # Handle the error accordingly
     return df
+
 
 
 
