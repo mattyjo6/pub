@@ -27,8 +27,6 @@ def clean_data(df):
 
     return df
 
-
-
 df = load_data()
 df = clean_data(df)
 
@@ -49,9 +47,9 @@ def display_pubs(df):
 def display_filtered_pubs(df, authority_name):
     """Display filtered pubs on an interactive map."""
     filtered_df, _ = filter_pubs_by_authority(df, authority_name)
-    # Convert latitude and longitude columns to strings
+ """   # Convert latitude and longitude columns to strings
     filtered_df['latitude'] = filtered_df['latitude'].astype(str)
-    filtered_df['longitude'] = filtered_df['longitude'].astype(str)
+    filtered_df['longitude'] = filtered_df['longitude'].astype(str) """
     display_pubs(filtered_df)
 
 
