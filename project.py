@@ -89,7 +89,8 @@ def main():
 
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
-        filter_pubs_by_authority(pub_name, authority_name)
+        filter_pubs_by_authority(df, pub_name, authority_name)
+
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
