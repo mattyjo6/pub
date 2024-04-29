@@ -32,9 +32,12 @@ def main():
     # Sidebar input for local authority
     authority_name = st.sidebar.text_input("Enter Local Authority", "Westminster")
 
-    if st.sidebar.button("Show Pubs"):
-        display_pubs_by_authority(authority_name, df)
+    # Show button only if user has entered an authority name
+    if authority_name:
+        if st.sidebar.button("Show Pubs"):
+            display_pubs_by_authority(authority_name, df)
 
 if __name__ == "__main__":
     main()
+
 
