@@ -12,7 +12,11 @@ def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
     df.dropna(inplace=True)
+    # Convert latitude and longitude to string to avoid TypeError
+    df['latitude'] = df['latitude'].astype(str)
+    df['longitude'] = df['longitude'].astype(str)
     return df
+
 
 df = load_data()
 df = clean_data(df)
