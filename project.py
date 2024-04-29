@@ -21,10 +21,6 @@ def clean_data(df):
 
     return df
 
-
-
-
-
 df = load_data()
 df = clean_data(df)
 
@@ -56,7 +52,9 @@ def display_pubs(df, filtered_df=None):
     
 def filter_pubs_by_name(df, pub_name):
     """Filter pubs by name."""
-    return df[df['name'] == pub_name], df['name'].unique()
+    filtered_df = df[df['name'].str.contains(pub_name, case=False)]
+    return filtered_df
+
 
 
 def filter_pubs_by_authority(df, authority_name):
