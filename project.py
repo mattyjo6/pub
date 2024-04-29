@@ -12,8 +12,15 @@ def clean_data(df):
     # Remove any rows with missing values
     df.dropna(subset=['latitude', 'longitude'], inplace=True)
     # Convert latitude and longitude columns to numeric, handling errors gracefully
-    df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
-    df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+    try:
+        df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
+        df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+    except ValueError as e:
+        print("Error converting latitude or longitude to numeric:")
+        print(e)
+        print("Problematic values:")
+        print(df[~df['latitude'].apply(lambda x: str(x).replace('.', '', 1).isdigit())]['latitude'])
+        print(df[~df['longitude'].apply(lambda x: str(x).replace('.', '', 1).isdigit())]['longitude'])
     # Drop rows where latitude or longitude is not numeric
     df = df.dropna(subset=['latitude', 'longitude'])
     return df
