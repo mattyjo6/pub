@@ -27,11 +27,12 @@ def filter_pubs_by_authority(df, authority_name):
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
-def display_pubs(df, filtered_df=None):
+def display_pubs(df, filtered_df=None, fig=None):
     """Display pubs on an interactive map."""
     # Create an interactive map using Plotly
-    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
-    fig.update_layout(mapbox_style="open-street-map")
+    if fig is None:
+        fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+        fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None:
         # Add markers for the filtered pubs
@@ -62,6 +63,10 @@ def get_local_authority_options(df):
 def main():
     st.title("London Pubs Explorer")
 
+    # Load and clean the data
+    df = load_data()
+    df = clean_data(df)
+
     # Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
 
@@ -80,7 +85,7 @@ def main():
     if st.sidebar.button("Show Pub"):
         if pub_name and authority_name:  # Check if both pub name and authority are provided
             filtered_df = filter_pubs_by_name_and_authority(df, pub_name, authority_name)
-            display_pubs(filtered_df)
+            display_pubs(df, filtered_df)
         else:
             st.warning("Please enter both Pub Name and Local Authority.")
 
@@ -97,8 +102,6 @@ def main():
     st.map(df)
 
 if __name__ == "__main__":
-    df = load_data()  # Load the data outside the main function
-    df = clean_data(df)  # Clean the data
     main()
 
 
