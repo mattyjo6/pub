@@ -37,12 +37,12 @@ def display_pubs(df, filtered_df=None):
     
     if filtered_df is not None:
         # Add markers for the filtered pubs
-        filtered_fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
-                                         text="address", zoom=10, height=500)
-        fig.add_trace(filtered_fig.data[0])
+        fig.add_trace(px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
+                                         text="address", zoom=10, height=500).data[0])
     
     # Display the map
     st.plotly_chart(fig)
+
 
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
