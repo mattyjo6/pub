@@ -27,6 +27,7 @@ def clean_data(df):
 
     return df
 
+
 df = load_data()
 df = clean_data(df)
 
