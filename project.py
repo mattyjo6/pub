@@ -42,6 +42,10 @@ def display_pubs(df):
     fig.update_layout(mapbox_style="open-street-map")
     # Display the map
     st.plotly_chart(fig)
+    
+def filter_pubs_by_name(df, pub_name):
+    """Filter pubs by name."""
+    return df[df['name'] == pub_name], df['name'].unique()
 
 
 def filter_pubs_by_authority(df, authority_name):
@@ -89,7 +93,7 @@ def main():
 
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
-        filter_pubs_by_authority(df, pub_name, authority_name)
+        filter_pubs_by_name(df, pub_name)
 
 
     # [ST3] Map widget
