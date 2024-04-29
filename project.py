@@ -93,10 +93,6 @@ def main():
     st.subheader("Distribution of Pubs by Local Authority")
     st.write(px.pie(df, names='local_authority'))
 
-    # [VIZ3] Line chart
-    st.subheader("Number of Pubs Over Time")
-    st.line_chart(df.groupby('year')['name'].count())
-
     # [VIZ4] Detailed map
     st.subheader("Detailed Map of London Pubs")
     st.map(df)
