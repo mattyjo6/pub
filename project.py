@@ -10,19 +10,15 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
 def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
-    df.dropna(subset=['latitude', 'longitude'], inplace=True)
-    # Convert latitude and longitude columns to numeric, handling errors gracefully
+    df.dropna(inplace=True)
+    # Convert latitude and longitude columns to numeric
     try:
-        df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
+        df['latitude'] = df['latitude'].apply(lambda x: float(x.split()[0]))
         df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
-    except ValueError as e:
+    except (ValueError, IndexError) as e:
         print("Error converting latitude or longitude to numeric:")
         print(e)
-        print("Problematic values:")
-        print(df[~df['latitude'].apply(lambda x: str(x).replace('.', '', 1).isdigit())]['latitude'])
-        print(df[~df['longitude'].apply(lambda x: str(x).replace('.', '', 1).isdigit())]['longitude'])
-    # Drop rows where latitude or longitude is not numeric
-    df = df.dropna(subset=['latitude', 'longitude'])
+        # Handle the error accordingly
     return df
 
 
