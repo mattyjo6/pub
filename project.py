@@ -81,7 +81,12 @@ def main():
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
-    display_pubs(df)  # Display the original DataFrame on the map
+    if pub_name:  # Check if pub_name is provided
+        filtered_df = filter_pubs_by_name(df, pub_name)
+    else:
+        filtered_df = df  # Use original DataFrame if no pub_name is provided
+    display_pubs(filtered_df)  # Display the filtered DataFrame on the map
+
 
     # [VIZ2] Pie chart
     st.subheader("Distribution of Pubs by Local Authority")
