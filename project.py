@@ -21,14 +21,12 @@ def clean_data(df):
 
     return df
 
-df = load_data()
-df = clean_data(df)
-
 
 # [PY2] A function that returns more than one value
 def filter_pubs_by_authority(df, authority_name):
     """Filter pubs by local authority."""
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
+
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df=None):
@@ -47,42 +45,20 @@ def display_pubs(df, filtered_df=None):
     st.plotly_chart(fig)
 
 
-    
+# [PY3] A function that returns a value and is called in at least two different places in your program
 def filter_pubs_by_name(df, pub_name):
     """Filter pubs by name."""
     filtered_df = df[df['name'].str.contains(pub_name, case=False)]
     return filtered_df
 
 
-
-def filter_pubs_by_authority(df, authority_name):
-    """Filter pubs by local authority."""
-    filtered_df, _ = filter_pubs_by_authority(df, authority_name)
-    # Ensure latitude and longitude columns are numeric
-    filtered_df['latitude'] = pd.to_numeric(filtered_df['latitude'], errors='coerce')
-    filtered_df['longitude'] = pd.to_numeric(filtered_df['longitude'], errors='coerce')
-    # Drop rows with null latitude or longitude values
-    filtered_df = filtered_df.dropna(subset=['latitude', 'longitude'])
-    return filtered_df, df['local_authority'].unique()
-
-
-
-
-# [PY4] A list comprehension
-def get_local_authorities(df):
-    """Get unique local authorities."""
-    return [authority for authority in df['local_authority'].unique()]
-
-
-# [PY5] A dictionary where you write code to access its keys, values, or items
-def get_local_authority_options(df):
-    """Get local authority options for selectbox."""
-    return {authority: authority for authority in df['local_authority'].unique()}
-
-
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
+
+    # Load data
+    df = load_data()
+    df = clean_data(df)
 
     # Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
@@ -101,13 +77,11 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(filtered_df)
-
-
+        display_pubs(df, filtered_df)  # Pass both original and filtered DataFrame
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
-    display_pubs(df)
+    display_pubs(df)  # Display the original DataFrame on the map
 
     # [VIZ2] Pie chart
     st.subheader("Distribution of Pubs by Local Authority")
@@ -116,6 +90,10 @@ def main():
     # [VIZ4] Detailed map
     st.subheader("Detailed Map of London Pubs")
     st.map(df)
+
+
+if __name__ == "__main__":
+    main()
 
 
 if __name__ == "__main__":
