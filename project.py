@@ -88,18 +88,20 @@ def main():
     st.subheader("Map of London Pubs")
     display_pubs(df)
 
-    # [VIZ2] Pie chart
-    st.subheader("Distribution of Pubs by Postcode")
-    st.write(px.pie(df, names='postcode'))
+    # Sort the DataFrame by the number of pubs in each local authority in descending order
+    df_sorted = df['local_authority'].value_counts().reset_index().rename(
+        columns={'index': 'local_authority', 'local_authority': 'pub_count'})
+    df_sorted = df_sorted.head(10)  # Select only the top 10 local authorities
 
-    # [VIZ4] Detailed map
-    st.subheader("Detailed Map of London Pubs")
-    st.map(df)
+    # [VIZ2] Pie chart
+    st.subheader("Top 10 Local Authorities with the Most Pubs")
+    fig = px.pie(df_sorted, names='local_authority', values='pub_count',
+                 title="Distribution of Pubs by Local Authority")
+    fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
+    st.plotly_chart(fig)
 
 if __name__ == "__main__":
     df = load_data()  # Load the data outside the main function
     df = clean_data(df)  # Clean the data
     main()
-
-
 
