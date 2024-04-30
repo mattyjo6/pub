@@ -126,7 +126,5 @@ def main():
     else:
         st.warning("No data available to display the pie chart.")
 
-    display_pubs(df)
-
 if __name__ == "__main__":
     main()
