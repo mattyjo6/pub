@@ -29,6 +29,7 @@ def filter_pubs_by_authority(df, authority_name):
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
+    print("Displaying pubs...")  # Debug print
     # Create an interactive map using Plotly
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
@@ -46,6 +47,7 @@ def display_pubs(df, filtered_df):
     st.plotly_chart(fig)
 
 
+
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for selectbox."""
@@ -54,8 +56,11 @@ def get_local_authority_options(df):
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def filter_pubs_by_name(df, pub_name):
     """Filter pubs by name."""
+    print("Filtering pubs by name:", pub_name)  # Debug print
     filtered_df = df[df['name'].str.contains(pub_name, case=False)]
+    print("Filtered dataframe shape:", filtered_df.shape)  # Debug print
     return filtered_df
+
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
