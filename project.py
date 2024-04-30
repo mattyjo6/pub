@@ -106,27 +106,24 @@ def main():
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
     display_pubs(df)
+
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
-    top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
-
-    top_n_local_authorities = pub_counts.head(top_local_authorities)
-
-    # Create a DataFrame from the selected number of top local authorities and their pub counts
-    df_top_n = pd.DataFrame(
-        {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
 
     # [VIZ2] Pie chart
-    st.subheader(f"Top {top_local_authorities} Local Authorities with the Most Pubs")
+    st.subheader("Distribution of Pubs by Local Authority")
+    top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
+    top_n_local_authorities = pub_counts.head(top_local_authorities)
+    df_top_n = pd.DataFrame({'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
+
     if not df_top_n.empty:  # Check if the DataFrame is not empty
         fig = px.pie(df_top_n, names='local_authority', values='pub_count',
-                     title="Distribution of Pubs by Local Authority")
+                     title=f"Top {top_local_authorities} Local Authorities with the Most Pubs")
         fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
         st.plotly_chart(fig)
     else:
         st.warning("No data available to display the pie chart.")
 
-    display_pubs(df)
 
 if __name__ == "__main__":
     main()
