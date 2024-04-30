@@ -101,7 +101,7 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-
+    return filtered_df
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
     display_pubs(df)
@@ -129,4 +129,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
