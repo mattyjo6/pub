@@ -118,8 +118,29 @@ def main():
     else:
         st.warning("No data available to display the pie chart.")
 
+    # Calculate the sum of pubs for each postal code
+    pub_counts_by_postcode = df['postcode'].value_counts()
+
+    # Select the top ten postal codes with the highest number of pubs
+    top_ten_postcodes = pub_counts_by_postcode.head(10)
+
+    # Create a DataFrame from the selected top ten postal codes and their pub counts
+    df_top_ten_postcodes = pd.DataFrame(
+        {'postcode': top_ten_postcodes.index, 'pub_count': top_ten_postcodes.values})
+
+    # [VIZ3] Pie chart for top ten postal codes with the most pubs
+    st.subheader("Top Ten Postal Codes with the Most Pubs")
+    if not df_top_ten_postcodes.empty:  # Check if the DataFrame is not empty
+        fig_postcodes = px.pie(df_top_ten_postcodes, names='postcode', values='pub_count',
+                               title="Top Ten Postal Codes with the Most Pubs")
+        fig_postcodes.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
+        st.plotly_chart(fig_postcodes)
+    else:
+        st.warning("No data available to display the pie chart for top ten postal codes.")
+
 if __name__ == "__main__":
     main()
+
 
 
 
