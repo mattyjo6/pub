@@ -91,7 +91,9 @@ def main():
     else:
         # [ST3] Map widget
         st.subheader("Map of London Pubs")
-        display_pubs(df)
+        display_pubs(df, None)  # Pass None as filtered_df when not filtering
+
+
 
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
