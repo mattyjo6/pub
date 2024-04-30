@@ -41,7 +41,7 @@ def display_pubs(df, filtered_df=None):
 
     if filtered_df is not None:
         # Update the existing map with markers for the filtered pubs
-        fig.add_scattermapbox(
+        fig.update_traces(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
@@ -50,6 +50,7 @@ def display_pubs(df, filtered_df=None):
 
     # Display the map
     st.plotly_chart(fig)
+
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
