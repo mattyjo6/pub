@@ -41,7 +41,7 @@ def display_pubs(df, filtered_df=None):
 
     if filtered_df is not None:
         # Update the existing map with markers for the filtered pubs
-        fig.update_traces(
+        fig.add_scattermapbox(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
@@ -65,8 +65,6 @@ def filter_pubs_by_name(df, pub_name):
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
-    # Your existing main function here
-
     st.title("London Pubs Explorer")
 
     # Sidebar input for local authority
@@ -95,7 +93,7 @@ def main():
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
-    display_pubs(df)
+
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
