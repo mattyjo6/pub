@@ -39,7 +39,7 @@ def display_pubs(df, filtered_df=None):
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
 
-    if filtered_df is not None:
+    if filtered_df is not None and not filtered_df.empty:
         # Update the existing map with markers for the filtered pubs
         fig.update_traces(
             lat=filtered_df['latitude'],
@@ -47,9 +47,13 @@ def display_pubs(df, filtered_df=None):
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
         )
+    elif filtered_df is not None and filtered_df.empty:
+        # If filtered_df is empty, show a message or handle it as per your requirement
+        st.warning("No pubs found matching the provided criteria.")
 
     # Display the map
     st.plotly_chart(fig)
+
 
 
 
