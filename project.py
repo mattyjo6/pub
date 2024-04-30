@@ -81,10 +81,12 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(df, filtered_df)
+        # Display the filtered pubs on the map
+        display_pubs(filtered_df)
     else:
         # [ST3] Map widget
         st.subheader("Map of London Pubs")
+        # Display the original map with all pubs
         display_pubs(df)
 
     # Calculate the sum of pubs for each local authority
@@ -109,4 +111,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
