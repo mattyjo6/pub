@@ -31,20 +31,19 @@ def display_pubs(df, filtered_df=None):
     """Display pubs on an interactive map."""
     # Create an interactive map using Plotly
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None:
-        # Update the existing map with markers for the filtered pubs using the same marker properties
+        # Update the existing map with markers for the filtered pubs
         fig.add_scattermapbox(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
-            marker=dict(color=fig.data[0].marker.color, size=fig.data[0].marker.size),  # Use same marker properties as the original map
         )
 
     # Display the map
     st.plotly_chart(fig)
-
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
@@ -80,24 +79,23 @@ def main():
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
     # [ST2] Button widget
-    show_pub_button = st.sidebar.button("Show Pub")
-
-    # Display the original map when the page loads
-    st.subheader("Map of London Pubs")
-    display_pubs(df)
-
-    # Display filtered pubs when "Show Pub" button is clicked
-    if show_pub_button:
+    if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(filtered_df)
+        display_pubs(df, filtered_df)
+    else:
+        # [ST3] Map widget
+        st.subheader("Map of London Pubs")
+        display_pubs(df)
 
-    # Calculate the sum of pubs for each local authority and display pie chart
+    # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
+
     top_n_local_authorities = pub_counts.head(top_local_authorities)
 
     # Create a DataFrame from the selected number of top local authorities and their pub counts
-    df_top_n = pd.DataFrame({'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
+    df_top_n = pd.DataFrame(
+        {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
 
     # [VIZ2] Pie chart
     st.subheader(f"Top {top_local_authorities} Local Authorities with the Most Pubs")
@@ -109,5 +107,7 @@ def main():
     else:
         st.warning("No data available to display the pie chart.")
 
+if __name__ == "__main__":
+    main()
 
 
