@@ -82,10 +82,16 @@ def main():
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
     # [ST2] Button widget
-    if st.sidebar.button("Show Pub"):
+    show_pub_button = st.sidebar.button("Show Pub")
+    reset_button = st.sidebar.button("Reset Map")
+
+    if show_pub_button:
         filtered_df = filter_pubs_by_name_and_authority(df, pub_name, authority_name)
         st.subheader("Map of London Pubs")
         display_pubs(df, filtered_df)
+    elif reset_button:
+        st.subheader("Map of London Pubs")
+        display_pubs(df, None)
     else:
         # [ST3] Map widget
         st.subheader("Map of London Pubs")
