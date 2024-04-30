@@ -32,6 +32,25 @@ def filter_pubs_by_name(df, pub_name):
     filtered_df = df[df['name'].str.contains(pub_name, case=False)]
     return filtered_df
 
+# [PY3] A function that returns a value and is called in at least two different places in your program
+def display_pubs(df, filtered_df=None):
+    """Display pubs on an interactive map."""
+    # Create an interactive map using Plotly
+    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig.update_layout(mapbox_style="open-street-map")
+
+    if filtered_df is not None:
+        # Update the existing map with markers for the filtered pubs
+        fig.add_scattermapbox(
+            lat=filtered_df['latitude'],
+            lon=filtered_df['longitude'],
+            customdata=filtered_df[['name', 'address']],
+            hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+        )
+
+    # Display the map
+    st.plotly_chart(fig)
+
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
