@@ -80,25 +80,24 @@ def main():
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
     # [ST2] Button widget
-    if st.sidebar.button("Show Pub"):
-        filtered_df = filter_pubs_by_name(df, pub_name)
-        # Display the filtered pubs on the map
-        display_pubs(filtered_df)
-    else:
-        # [ST3] Map widget
-        st.subheader("Map of London Pubs")
-        # Display the original map with all pubs
-        display_pubs(df)
+    show_pub_button = st.sidebar.button("Show Pub")
 
-    # Calculate the sum of pubs for each local authority
+    # Display the original map when the page loads
+    st.subheader("Map of London Pubs")
+    display_pubs(df)
+
+    # Display filtered pubs when "Show Pub" button is clicked
+    if show_pub_button:
+        filtered_df = filter_pubs_by_name(df, pub_name)
+        display_pubs(filtered_df)
+
+    # Calculate the sum of pubs for each local authority and display pie chart
     pub_counts = df['local_authority'].value_counts()
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
-
     top_n_local_authorities = pub_counts.head(top_local_authorities)
 
     # Create a DataFrame from the selected number of top local authorities and their pub counts
-    df_top_n = pd.DataFrame(
-        {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
+    df_top_n = pd.DataFrame({'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
 
     # [VIZ2] Pie chart
     st.subheader(f"Top {top_local_authorities} Local Authorities with the Most Pubs")
@@ -110,7 +109,5 @@ def main():
     else:
         st.warning("No data available to display the pie chart.")
 
-if __name__ == "__main__":
-    main()
 
 
