@@ -21,16 +21,10 @@ def clean_data(df):
 
     return df
 
-
-df = load_data()
-df = clean_data(df)
-
-
 # [PY2] A function that returns more than one value
 def filter_pubs_by_authority(df, authority_name):
     """Filter pubs by local authority."""
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
-
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df=None):
@@ -51,7 +45,6 @@ def display_pubs(df, filtered_df=None):
     # Display the map
     st.plotly_chart(fig)
 
-
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for selectbox."""
@@ -66,6 +59,10 @@ def filter_pubs_by_name(df, pub_name):
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
+
+    # Load and clean the data
+    df = load_data()
+    df = clean_data(df)
 
     # Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
@@ -84,15 +81,11 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(filtered_df)
-
-    # [ST5] Button widget for resetting the filter
-    if st.sidebar.button("Reset Filter"):
-        # Reset the filter and display the original map
+        display_pubs(df, filtered_df)
+    else:
+        # [ST3] Map widget
+        st.subheader("Map of London Pubs")
         display_pubs(df)
-
-    # [ST3] Map widget
-    st.subheader("Map of London Pubs")
 
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
@@ -116,3 +109,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
