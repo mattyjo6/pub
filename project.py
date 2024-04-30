@@ -41,7 +41,7 @@ def display_pubs(df, filtered_df=None):
 
     if filtered_df is not None:
         # Update the existing map with markers for the filtered pubs
-        fig.update_traces(
+        fig.add_scattermapbox(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
@@ -51,38 +51,6 @@ def display_pubs(df, filtered_df=None):
     # Display the map
     st.plotly_chart(fig)
 
-
-
-def filter_pubs_by_name(df, pub_name):
-    """Filter pubs by name."""
-    filtered_df = df[df['name'].str.contains(pub_name, case=False)]
-    return filtered_df
-
-
-def filter_pubs_by_authority(df, authority_name):
-    """Filter pubs by local authority."""
-    filtered_df, _ = filter_pubs_by_authority(df, authority_name)
-    # Ensure latitude and longitude columns are numeric
-    filtered_df['latitude'] = pd.to_numeric(filtered_df['latitude'], errors='coerce')
-    filtered_df['longitude'] = pd.to_numeric(filtered_df['longitude'], errors='coerce')
-    # Drop rows with null latitude or longitude values
-    filtered_df = filtered_df.dropna(subset=['latitude', 'longitude'])
-    return filtered_df, df['local_authority'].unique()
-
-
-# [PY4] A list comprehension
-def get_local_authorities(df):
-    """Get unique local authorities."""
-    return [authority for authority in df['local_authority'].unique()]
-
-
-# [PY5] A dictionary where you write code to access its keys, values, or items
-def get_local_authority_options(df):
-    """Get local authority options for selectbox."""
-    return {authority: authority for authority in df['local_authority'].unique()}
-
-
-# [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
 
@@ -104,6 +72,11 @@ def main():
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
         display_pubs(filtered_df)
+
+    # [ST5] Button widget for resetting the filter
+    if st.sidebar.button("Reset Filter"):
+        # Reset the filter and display the original map
+        display_pubs(df)
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
@@ -130,3 +103,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
