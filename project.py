@@ -40,33 +40,29 @@ def display_pubs(df, filtered_df=None):
     fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None and not filtered_df.empty:
-        # Update the existing map with markers for the filtered pubs
         # Retrieve the properties of the original map marker
         original_marker = fig.data[0].marker
 
-    # Update the properties of the filtered pubs markers to match the original map marker
-    fig.update_traces(
-        lat=filtered_df['latitude'],
-        lon=filtered_df['longitude'],
-        customdata=filtered_df[['name', 'address']],
-        hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
-        mode='markers',  # Specify the mode as 'markers' to display individual point markers
-        marker=dict(
-            symbol=original_marker.symbol,  # Use the same symbol as the original marker
-            size=original_marker.size,      # Use the same size as the original marker
-            color=original_marker.color,    # Use the same color as the original marker
-            opacity=original_marker.opacity # Use the same opacity as the original marker
+        # Update the properties of the filtered pubs markers to match the original map marker
+        fig.update_traces(
+            lat=filtered_df['latitude'],
+            lon=filtered_df['longitude'],
+            customdata=filtered_df[['name', 'address']],
+            hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+            mode='markers',  # Specify the mode as 'markers' to display individual point markers
+            marker=dict(
+                symbol=original_marker.symbol,  # Use the same symbol as the original marker
+                size=original_marker.size,      # Use the same size as the original marker
+                color=original_marker.color,    # Use the same color as the original marker
+                opacity=original_marker.opacity # Use the same opacity as the original marker
+            )
         )
-    )
-
     elif filtered_df is not None and filtered_df.empty:
         # If filtered_df is empty, show a message or handle it as per your requirement
         st.warning("No pubs found matching the provided criteria.")
 
     # Display the map
     st.plotly_chart(fig)
-
-
 
 
 def filter_pubs_by_name(df, pub_name):
@@ -119,7 +115,7 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(filtered_df)
+
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
