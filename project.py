@@ -39,7 +39,7 @@ def display_pubs(df, filtered_df=None):
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
 
-    if filtered_df is not None:
+    if filtered_df is not None and not filtered_df.empty:
         # Update the existing map with markers for the filtered pubs
         fig.add_scattermapbox(
             lat=filtered_df['latitude'],
@@ -86,6 +86,7 @@ def main():
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
     display_pubs(df)
+
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
