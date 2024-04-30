@@ -83,8 +83,8 @@ def main():
 
     # [ST2] Button widgets for Show Pub and Reset
     col1, col2 = st.sidebar.columns([2, 1])
-    show_pub_button = col1.button("Show Pub")
-    reset_button = col2.button("Reset Map")
+    show_pub_button = col1.button("Show Pub", key="show_pub_button")
+    reset_button = col2.button("Reset Map", key="reset_button")
 
     if show_pub_button:
         filtered_df = filter_pubs_by_name_and_authority(df, pub_name, authority_name)
