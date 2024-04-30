@@ -88,19 +88,17 @@ def main():
     st.subheader("Map of London Pubs")
     display_pubs(df)
 
-    # Sort the DataFrame by the number of pubs in each local authority in descending order
-df_sorted = df['local_authority'].value_counts().reset_index().rename(columns={'index': 'local_authority', 'local_authority': 'pub_count'})
-df_sorted = df_sorted.head(10)  # Select only the top 10 local authorities
+        # Sort the DataFrame by the number of pubs in each local authority in descending order
+    df_sorted = df['local_authority'].value_counts().reset_index().rename(
+        columns={'index': 'local_authority', 'local_authority': 'pub_count'})
+    df_sorted = df_sorted.head(10)  # Select only the top 10 local authorities
 
-# [VIZ2] Pie chart
-st.subheader("Top 10 Local Authorities with the Most Pubs")
-if not df_sorted.empty:  # Check if the DataFrame is not empty
-    fig = px.pie(df_sorted, names='local_authority', values='pub_count', title="Distribution of Pubs by Local Authority")
+    # [VIZ2] Pie chart
+    st.subheader("Top 10 Local Authorities with the Most Pubs")
+    fig = px.pie(df_sorted, names='local_authority', values='pub_count',
+                 title="Distribution of Pubs by Local Authority")
     fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
     st.plotly_chart(fig)
-else:
-    st.warning("No data available to display the pie chart.")
-
 
 
 if __name__ == "__main__":
