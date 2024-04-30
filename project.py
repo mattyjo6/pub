@@ -95,13 +95,16 @@ def main():
 
     # [VIZ2] Pie chart
     st.subheader("Top 10 Local Authorities with the Most Pubs")
-    fig = px.pie(df_sorted, names='local_authority', values='pub_count',
-                 title="Distribution of Pubs by Local Authority")
-    fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
-    st.plotly_chart(fig)
+    if not df_sorted.empty:  # Check if the DataFrame is not empty
+        fig = px.pie(df_sorted, names='local_authority', values='pub_count',
+                     title="Distribution of Pubs by Local Authority")
+        fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
+        st.plotly_chart(fig)
+    else:
+        st.warning("No data available to display the pie chart.")
+
 
 if __name__ == "__main__":
     df = load_data()  # Load the data outside the main function
     df = clean_data(df)  # Clean the data
     main()
-
