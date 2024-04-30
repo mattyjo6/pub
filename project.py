@@ -21,6 +21,37 @@ def clean_data(df):
 
     return df
 
+
+df = load_data()
+df = clean_data(df)
+
+
+# [PY2] A function that returns more than one value
+def filter_pubs_by_authority(df, authority_name):
+    """Filter pubs by local authority."""
+    return df[df['local_authority'] == authority_name], df['local_authority'].unique()
+
+
+# [PY3] A function that returns a value and is called in at least two different places in your program
+def display_pubs(df, filtered_df=None):
+    """Display pubs on an interactive map."""
+    # Create an interactive map using Plotly
+    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig.update_layout(mapbox_style="open-street-map")
+
+    if filtered_df is not None:
+        # Update the existing map with markers for the filtered pubs
+        fig.update_traces(
+            lat=filtered_df['latitude'],
+            lon=filtered_df['longitude'],
+            customdata=filtered_df[['name', 'address']],
+            hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+        )
+
+    # Display the map
+    st.plotly_chart(fig)
+
+
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for selectbox."""
@@ -32,32 +63,11 @@ def filter_pubs_by_name(df, pub_name):
     filtered_df = df[df['name'].str.contains(pub_name, case=False)]
     return filtered_df
 
-# [PY3] A function that returns a value and is called in at least two different places in your program
-def display_pubs(df, filtered_df=None):
-    """Display pubs on an interactive map."""
-    # Create an interactive map using Plotly
-    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
-    fig.update_layout(mapbox_style="open-street-map")
-
-    if filtered_df is not None and not filtered_df.empty:
-        # Update the existing map with markers for the filtered pubs
-        fig.add_scattermapbox(
-            lat=filtered_df['latitude'],
-            lon=filtered_df['longitude'],
-            customdata=filtered_df[['name', 'address']],
-            hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
-        )
-
-    # Display the map
-    st.plotly_chart(fig)
-
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
-    st.title("London Pubs Explorer")
+    # Your existing main function here
 
-    # Load and clean the data
-    df = load_data()
-    df = clean_data(df)
+    st.title("London Pubs Explorer")
 
     # Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
@@ -76,7 +86,7 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(df, filtered_df)
+        display_pubs(filtered_df)
 
     # [ST5] Button widget for resetting the filter
     if st.sidebar.button("Reset Filter"):
@@ -86,7 +96,6 @@ def main():
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
     display_pubs(df)
-
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
@@ -109,5 +118,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
