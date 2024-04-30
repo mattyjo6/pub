@@ -35,17 +35,16 @@ def filter_pubs_by_authority(df, authority_name):
 
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
-def display_pubs(df, filtered_df=None):
+def display_pubs(*dfs):
     """Display pubs on an interactive map."""
     # Create an interactive map using Plotly
-    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig = px.scatter_mapbox(zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
 
-    if filtered_df is not None:
-        # Add markers for the filtered pubs
-        filtered_fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
-                                         text="address", zoom=10, height=500)
-        fig.add_trace(filtered_fig.data[0])
+    for df in dfs:
+        if df is not None:
+            # Add markers for the pubs
+            fig.add_trace(px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name").data[0])
 
     # Display the map
     st.plotly_chart(fig)
@@ -101,30 +100,12 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
-        display_pubs(filtered_df)
+        display_pubs(df, filtered_df)  # Display both original and filtered pubs on the same map
 
     # [ST3] Map widget
     st.subheader("Map of London Pubs")
-    display_pubs(df)
-    # Calculate the sum of pubs for each local authority
-    pub_counts = df['local_authority'].value_counts()
-    top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
+    display_pubs(df)  # Display original pubs on the map
 
-    top_n_local_authorities = pub_counts.head(top_local_authorities)
-
-    # Create a DataFrame from the selected number of top local authorities and their pub counts
-    df_top_n = pd.DataFrame(
-        {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
-
-    # [VIZ2] Pie chart
-    st.subheader(f"Top {top_local_authorities} Local Authorities with the Most Pubs")
-    if not df_top_n.empty:  # Check if the DataFrame is not empty
-        fig = px.pie(df_top_n, names='local_authority', values='pub_count',
-                     title="Distribution of Pubs by Local Authority")
-        fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
-        st.plotly_chart(fig)
-    else:
-        st.warning("No data available to display the pie chart.")
 
 if __name__ == "__main__":
     main()
