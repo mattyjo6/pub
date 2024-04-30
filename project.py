@@ -78,12 +78,13 @@ def main():
     st.sidebar.write("Select a local authority to view pubs on the map.")
     st.sidebar.write("You can also filter pubs by name.")
 
-    # [ST1] Dropdown widget
+    # [ST1] Text input widget for pub name
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
-    # [ST2] Button widget
-    show_pub_button = st.sidebar.button("Show Pub")
-    reset_button = st.sidebar.button("Reset Map")
+    # [ST2] Button widgets for Show Pub and Reset
+    col1, col2 = st.sidebar.columns([2, 1])
+    show_pub_button = col1.button("Show Pub")
+    reset_button = col2.button("Reset Map")
 
     if show_pub_button:
         filtered_df = filter_pubs_by_name_and_authority(df, pub_name, authority_name)
@@ -119,5 +120,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
