@@ -89,8 +89,8 @@ def main():
     display_pubs(df)
 
     # [VIZ2] Pie chart
-    st.subheader("Distribution of Pubs by Local Authority")
-    st.write(px.pie(df, names='local_authority'))
+    st.subheader("Distribution of Pubs by Postcode")
+    st.write(px.pie(df, names='postcode'))
 
     # [VIZ4] Detailed map
     st.subheader("Detailed Map of London Pubs")
