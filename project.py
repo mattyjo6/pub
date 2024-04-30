@@ -46,22 +46,19 @@ def display_pubs(df, filtered_df):
     # Display the updated map
     st.plotly_chart(fig)
 
-
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for selectbox."""
     return {authority: authority for authority in df['local_authority'].unique()}
 
 # [PY3] A function that returns a value and is called in at least two different places in your program
-def filter_pubs_by_name(df, pub_name):
-    """Filter pubs by name."""
-    print("Filtering pubs by name:", pub_name)  # Debug print
-    filtered_df = df[df['name'].str.contains(pub_name, case=False)]
+def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
+    """Filter pubs by name and local authority."""
+    print("Filtering pubs by name:", pub_name, "and authority:", authority_name)  # Debug print
+    filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & (df['local_authority'] == authority_name)]
     print("Filtered dataframe shape:", filtered_df.shape)  # Debug print
     return filtered_df
 
-
-# [ST1], [ST2], [ST3] At least three Streamlit different widgets
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
@@ -86,7 +83,7 @@ def main():
 
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
-        filtered_df = filter_pubs_by_name(df, pub_name)
+        filtered_df = filter_pubs_by_name_and_authority(df, pub_name, authority_name)
         st.subheader("Map of London Pubs")
         display_pubs(df, filtered_df)
     else:
@@ -116,6 +113,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
