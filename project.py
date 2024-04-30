@@ -42,12 +42,17 @@ def display_pubs(*dfs):
     fig.update_layout(mapbox_style="open-street-map")
 
     for df in dfs:
-        if df is not None:
-            # Add markers for the pubs
-            fig.add_trace(px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name").data[0])
+        if df is not None and not df.empty:  # Check if DataFrame is not empty
+            # Check if latitude and longitude columns exist
+            if 'latitude' in df.columns and 'longitude' in df.columns:
+                # Add markers for the pubs
+                fig.add_trace(px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name").data[0])
+            else:
+                st.warning("Latitude and/or longitude columns not found in the DataFrame.")
 
     # Display the map
     st.plotly_chart(fig)
+
 
 
 def filter_pubs_by_name(df, pub_name):
