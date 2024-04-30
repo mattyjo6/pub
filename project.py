@@ -42,7 +42,7 @@ def display_pubs(df, filtered_df=None):
     if filtered_df is not None and not filtered_df.empty:
         # Update the existing map with markers for the filtered pubs
         # Retrieve the properties of the original map marker
-    original_marker = fig.data[0].marker
+        original_marker = fig.data[0].marker
 
     # Update the properties of the filtered pubs markers to match the original map marker
     fig.update_traces(
