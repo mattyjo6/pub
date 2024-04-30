@@ -40,13 +40,17 @@ def display_pubs(df, filtered_df=None):
     fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None:
-        # Add markers for the filtered pubs
-        filtered_fig = px.scatter_mapbox(filtered_df, lat="latitude", lon="longitude", hover_name="name",
-                                         text="address", zoom=10, height=500)
-        fig.add_trace(filtered_fig.data[0])
+        # Update the existing map with markers for the filtered pubs
+        fig.update_traces(
+            lat=filtered_df['latitude'],
+            lon=filtered_df['longitude'],
+            customdata=filtered_df[['name', 'address']],
+            hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+        )
 
     # Display the map
     st.plotly_chart(fig)
+
 
 
 def filter_pubs_by_name(df, pub_name):
