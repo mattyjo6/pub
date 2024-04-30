@@ -46,6 +46,14 @@ def main():
     # Clean the data
     df = clean_data(df)
 
+    # Sidebar input for filtering pubs by name
+    pub_name = st.sidebar.text_input("Enter Pub Name", "")
+
+    # [ST2] Button widget to show pubs
+    if st.sidebar.button("Show Pub"):
+        filtered_df = filter_pubs_by_name(df, pub_name)
+        display_pubs(filtered_df)
+
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
