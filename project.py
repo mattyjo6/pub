@@ -31,19 +31,20 @@ def display_pubs(df, filtered_df=None):
     """Display pubs on an interactive map."""
     # Create an interactive map using Plotly
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
-    fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None:
-        # Update the existing map with markers for the filtered pubs
+        # Update the existing map with markers for the filtered pubs using the same marker properties
         fig.add_scattermapbox(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+            marker=dict(color=fig.data[0].marker.color, size=fig.data[0].marker.size),  # Use same marker properties as the original map
         )
 
     # Display the map
     st.plotly_chart(fig)
+
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
