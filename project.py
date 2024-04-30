@@ -51,7 +51,21 @@ def display_pubs(df, filtered_df=None):
     # Display the map
     st.plotly_chart(fig)
 
+# [PY5] A dictionary where you write code to access its keys, values, or items
+def get_local_authority_options(df):
+    """Get local authority options for selectbox."""
+    return {authority: authority for authority in df['local_authority'].unique()}
+
+# [PY3] A function that returns a value and is called in at least two different places in your program
+def filter_pubs_by_name(df, pub_name):
+    """Filter pubs by name."""
+    filtered_df = df[df['name'].str.contains(pub_name, case=False)]
+    return filtered_df
+
+# [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
+    # Your existing main function here
+
     st.title("London Pubs Explorer")
 
     # Sidebar input for local authority
