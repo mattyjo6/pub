@@ -63,6 +63,7 @@ def filter_pubs_by_name(df, pub_name):
 
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
+# [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
     st.title("London Pubs Explorer")
 
@@ -87,13 +88,12 @@ def main():
     # [ST2] Button widget
     if st.sidebar.button("Show Pub"):
         filtered_df = filter_pubs_by_name(df, pub_name)
+        st.subheader("Map of London Pubs")
         display_pubs(df, filtered_df)
     else:
         # [ST3] Map widget
         st.subheader("Map of London Pubs")
         display_pubs(df, None)  # Pass None as filtered_df when not filtering
-
-
 
     # Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
