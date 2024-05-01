@@ -136,19 +136,6 @@ def main():
     else:
         st.warning("No data available to display the pie chart for postal codes.")
 
-    # [VIZ4] Bar chart for top ten pub names
-    st.subheader("Top Ten Pub Names")
-    pub_counts_by_name = df['name'].value_counts().head(10)
-    if not pub_counts_by_name.empty:
-        fig_names = px.bar(pub_counts_by_name, x=pub_counts_by_name.index, y=pub_counts_by_name.values,
-                           title="")
-        fig_names.update_xaxes(title_text="Pub Name")
-        fig_names.update_yaxes(title_text="Number of Pubs")
-
-        st.plotly_chart(fig_names)
-    else:
-        st.warning("No data available to display the bar chart for pub names.")
-   
     # Select columns to include in the pivot table
     columns_to_include = ['id', 'name', 'address', 'postcode', 'local_authority']
 
@@ -162,13 +149,9 @@ def main():
     st.write("Pivot Table - Number of Pubs by Selected Columns")
     st.write(pivot_table)
 
-
-
-
-
-
 if __name__ == "__main__":
     main()
+
 
 
 
