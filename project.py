@@ -1,3 +1,16 @@
+"""
+Name:       Matthew O'Neil
+CS230:      6
+Data:       London Pubs
+URL:
+
+Description:
+
+This program analyzes the Excel file London Pubs and uses the data to generate some cool and useful  information from it.
+The program contains a map of the U.K with the Pubs appearing on the map. They are represented by a blue dot and their names and addresses appear when hovering over the dot.
+The program also contains two different informational charts and a pivot table displaying the parts of the dataset.
+"""
+
 import pandas as pd
 import streamlit as st
 import plotly.express as px
@@ -8,7 +21,7 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
     df = pd.read_excel(file_path)
     return df
 
-# [DA1]
+# [DA1] Cleaning or manipulating data
 def clean_data(df):
     """Clean the London Pubs dataset."""
     # Remove any rows with missing values
@@ -25,7 +38,7 @@ def clean_data(df):
 def filter_pubs_by_authority(df, authority_name):
     """Filter pubs by local authority."""
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
-
+# [VIZ1]
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
@@ -46,11 +59,13 @@ def display_pubs(df, filtered_df):
     # Display the updated map
     st.plotly_chart(fig)
 
+
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for selectbox."""
     return {authority: authority for authority in df['local_authority'].unique()}
 
+# [DA5]
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
     """Filter pubs by name and local authority."""
@@ -58,6 +73,7 @@ def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
     filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & (df['local_authority'] == authority_name)]
     print("Filtered dataframe shape:", filtered_df.shape)  # Debug print
     return filtered_df
+
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
@@ -67,7 +83,7 @@ def main():
     df = load_data()
     df = clean_data(df)
 
-    # Sidebar input for local authority
+    #  [ST1] Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
 
     # [DA2] Sorting data in ascending or descending order, by one or more columns
@@ -78,6 +94,7 @@ def main():
     st.sidebar.write("Select a local authority to view pubs on the map.")
     st.sidebar.write("You can also filter pubs by name.")
 
+    # [DA4]
     # [ST1] Text input widget for pub name
     pub_name = st.sidebar.text_input("Enter Pub Name", "")
 
@@ -108,7 +125,7 @@ def main():
     df_top_n = pd.DataFrame(
         {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
 
-    # [VIZ2] Pie chart
+    # [VIZ1] Pie chart
     st.subheader(f"Top {top_local_authorities} Local Authorities with the Most Pubs")
     if not df_top_n.empty:  # Check if the DataFrame is not empty
         fig = px.pie(df_top_n, names='local_authority', values='pub_count',
@@ -117,7 +134,7 @@ def main():
         st.plotly_chart(fig)
     else:
         st.warning("No data available to display the pie chart.")
-
+# [DA9]
     # Calculate the sum of pubs for each postal code
     df['postcode_prefix'] = df['postcode'].str[:2]  # Extract first two characters of postcode
     pub_counts_by_postcode = df['postcode_prefix'].value_counts().head(10)
@@ -126,7 +143,7 @@ def main():
     df_top_10_postcodes = pd.DataFrame(
         {'postcode_prefix': pub_counts_by_postcode.index, 'pub_count': pub_counts_by_postcode.values})
 
-    # [VIZ3] New pie chart for top ten postal codes with most pubs
+    # [VIZ2] New pie chart for top ten postal codes with most pubs
     st.subheader("Top Ten Postal Codes with the Most Pubs")
     if not df_top_10_postcodes.empty:
         fig_postcode = px.pie(df_top_10_postcodes, names='postcode_prefix', values='pub_count',
@@ -136,7 +153,7 @@ def main():
     else:
         st.warning("No data available to display the pie chart for postal codes.")
 
-        # [VIZ4] Bar chart for top ten pub names
+    # [VIZ3] Bar chart for top ten pub names
     st.subheader("Top Ten Pub Names")
     pub_counts_by_name = df['name'].value_counts().head(10)
     if not pub_counts_by_name.empty:
@@ -155,19 +172,15 @@ def main():
     # Drop duplicate rows based on the selected columns
     df_unique = df[columns_to_include].drop_duplicates()
 
-    # Create a pivot table to summarize the number of pubs by selected columns
-    pivot_table = df_unique.pivot_table(index=['id', 'name', 'address', 'postcode'], aggfunc='first')
+    # [DA6] Create a pivot table to summarize the number of pubs by selected columns
+    pivot_table = df_unique.pivot_table(index=columns_to_include, aggfunc='size')
 
     # Display the pivot table
     st.write("Pivot Table - Number of Pubs by Selected Columns")
     st.write(pivot_table)
 
-
 if __name__ == "__main__":
     main()
-
-
-
 
 
 
