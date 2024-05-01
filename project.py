@@ -28,7 +28,6 @@ def clean_data(df):
     # Convert latitude and longitude columns to numeric
     df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
     df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
-    print("Null values in latitude column after cleaning:", df['latitude'].isnull().sum())
     return df
 
 # [PY2] A function that returns more than one value
@@ -171,5 +170,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
