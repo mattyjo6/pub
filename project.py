@@ -149,12 +149,13 @@ def main():
     else:
         st.warning("No data available to display the bar chart for pub names.")
    
-    # Create a pivot table to summarize the number of pubs by local authority and pub name
-    pivot_table = df.pivot_table(index='local_authority', columns='name', aggfunc='size', fill_value=0)
+    # Create a pivot table to summarize the number of pubs by all columns
+    pivot_table = df.pivot_table(index=df.columns.tolist(), aggfunc='size', fill_value=0)
 
     # Display the pivot table
-    st.write("Pivot Table - Number of Pubs by Local Authority and Pub Name")
+    st.write("Pivot Table - Number of Pubs by All Columns")
     st.write(pivot_table)
+
 
 if __name__ == "__main__":
     main()
