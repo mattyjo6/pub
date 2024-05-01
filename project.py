@@ -141,13 +141,20 @@ def main():
     pub_counts_by_name = df['name'].value_counts().head(10)
     if not pub_counts_by_name.empty:
         fig_names = px.bar(pub_counts_by_name, x=pub_counts_by_name.index, y=pub_counts_by_name.values,
-                           title="Top Ten Pub Names")
+                           title="")
+        fig_names.update_xaxes(title_text="Pub Name")
+        fig_names.update_yaxes(title_text="Number of Pubs")
+
         st.plotly_chart(fig_names)
     else:
         st.warning("No data available to display the bar chart for pub names.")
 
 if __name__ == "__main__":
     main()
+
+
+
+
 
 
 
