@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-
+df = pd.DataFrame()
 # [PY1] A function with two or more parameters, one of which has a default value
 def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
@@ -118,26 +118,29 @@ def main():
     else:
         st.warning("No data available to display the pie chart.")
 
-    # Calculate the sum of pubs for each postal code
-    df['postcode_prefix'] = df['postcode'].str[:2]  # Extract first two characters of postcode
-    pub_counts_by_postcode = df['postcode_prefix'].value_counts().head(10)
+# [VIZ4] Bar chart for top ten pub names
+pub_counts_by_name = df['name'].value_counts().head(10)
 
-    # Create a DataFrame for the top ten postal codes and their pub counts
-    df_top_10_postcodes = pd.DataFrame(
-        {'postcode_prefix': pub_counts_by_postcode.index, 'pub_count': pub_counts_by_postcode.values})
+# Create a DataFrame for the top ten pub names and their counts
+df_top_10_names = pd.DataFrame(
+    {'pub_name': pub_counts_by_name.index, 'pub_count': pub_counts_by_name.values})
 
-    # [VIZ3] New pie chart for top ten postal codes with most pubs
-    st.subheader("Top Ten Postal Codes with the Most Pubs")
-    if not df_top_10_postcodes.empty:
-        fig_postcode = px.pie(df_top_10_postcodes, names='postcode_prefix', values='pub_count',
-                              title="Distribution of Pubs by Postal Code Prefix")
-        fig_postcode.update_traces(textinfo='percent+label', showlegend=True)
-        st.plotly_chart(fig_postcode)
-    else:
-        st.warning("No data available to display the pie chart for postal codes.")
+# [VIZ5] New bar chart for top ten pub names
+st.subheader("Top Ten Pub Names")
+if not df_top_10_names.empty:
+    fig_name = px.bar(df_top_10_names, x='pub_name', y='pub_count',
+                      title="Top Ten Pub Names", labels={'pub_name': 'Pub Name', 'pub_count': 'Count'})
+    st.plotly_chart(fig_name)
+else:
+    st.warning("No data available to display the bar chart for pub names.")
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
 
 
 
