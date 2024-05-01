@@ -149,19 +149,23 @@ def main():
     else:
         st.warning("No data available to display the bar chart for pub names.")
    
-    # Select columns to include in the pivot table
-    columns_to_include = ['id', 'name', 'address', 'postcode', 'local_authority']
+    # Reset the index to remove the pub names as index and use the default numeric index
+    pub_counts_by_name = pub_counts_by_name.reset_index()
 
-    # Drop duplicate rows based on the selected columns
-    df_unique = df[columns_to_include].drop_duplicates()
+    # Rename the columns to 'name' and 'count'
+    pub_counts_by_name.columns = ['name', 'count']
 
-    # Create a pivot table to summarize the number of pubs by selected columns
-    pivot_table = df_unique.pivot_table(index=columns_to_include, aggfunc=None)
+    # Create the bar chart
+    fig_names = px.bar(pub_counts_by_name, x='name', y='count', title="Top Ten Pub Names")
+
+    # Update the axis titles
+    fig_names.update_xaxes(title_text="Pub Name")
+    fig_names.update_yaxes(title_text="Number of Pubs")
+
+    # Display the bar chart
+    st.plotly_chart(fig_names)
 
 
-    # Display the pivot table
-    st.write("Pivot Table - Number of Pubs by Selected Columns")
-    st.write(pivot_table)
 
 if __name__ == "__main__":
     main()
