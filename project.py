@@ -149,12 +149,20 @@ def main():
     else:
         st.warning("No data available to display the bar chart for pub names.")
    
-    # Filter out the column "o" and its fields containing 1
-    pivot_table_filtered = pivot_table.drop(columns=['o'], errors='ignore').drop(index=[1], errors='ignore')
+    # Select columns to include in the pivot table
+    columns_to_include = ['id', 'name', 'address', 'postcode', 'local_authority']
 
-    # Display the filtered pivot table
+    # Drop duplicate rows based on the selected columns
+    df_unique = df[columns_to_include].drop_duplicates()
+
+    # Create a pivot table to summarize the number of pubs by selected columns
+    pivot_table = df_unique.pivot_table(index=columns_to_include, aggfunc='size')
+
+    # Display the pivot table
     st.write("Pivot Table - Number of Pubs by Selected Columns")
-    st.write(pivot_table_filtered)
+    st.write(pivot_table)
+
+
 
 
 
