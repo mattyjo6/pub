@@ -1,8 +1,10 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-df = pd.DataFrame()
+
 # [PY1] A function with two or more parameters, one of which has a default value
+
+
 def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
     df = pd.read_excel(file_path)
@@ -119,6 +121,12 @@ def main():
         st.warning("No data available to display the pie chart.")
 
 # [VIZ4] Bar chart for top ten pub names
+import pandas as pd
+
+# Load your data and assign it to the variable df
+df = pd.read_excel("open_pubs_10000_sample.xlsx")
+
+# Now you can use df within the scope of this code block
 pub_counts_by_name = df['name'].value_counts().head(10)
 
 # Create a DataFrame for the top ten pub names and their counts
@@ -136,8 +144,6 @@ else:
 
 if __name__ == "__main__":
     main()
-
-
 
 
 
