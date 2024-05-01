@@ -152,15 +152,13 @@ def main():
     # Select columns to include in the pivot table
     columns_to_include = ['id', 'name', 'address', 'postcode', 'local_authority']
 
-    # Drop duplicate rows based on the selected columns
-    df_unique = df[columns_to_include].drop_duplicates()
-
     # Create a pivot table to summarize the number of pubs by selected columns
-    pivot_table = df_unique.pivot_table(index=columns_to_include, aggfunc='size')
+    pivot_table = df[columns_to_include].pivot_table(index=columns_to_include, aggfunc='size').reset_index()
 
     # Display the pivot table
     st.write("Pivot Table - Number of Pubs by Selected Columns")
     st.write(pivot_table)
+
 
 
 
