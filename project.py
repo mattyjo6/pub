@@ -3,11 +3,10 @@ Name:       Matthew O'Neil
 CS230:      6
 Data:       London Pubs
 URL:
-
 Description:
-
-This program analyzes the Excel file London Pubs and uses the data to generate some cool and useful  information from it.
-The program contains a map of the U.K with the Pubs appearing on the map. They are represented by a blue dot and their names and addresses appear when hovering over the dot.
+This program analyzes the Excel file London Pubs and uses the data to generate some cool and useful information from it.
+The program contains a map of the U.K. with the Pubs appearing on the map. They are represented by a blue dot and their
+names and addresses appear when hovering over the dot.
 The program also contains two different informational charts and a pivot table displaying the parts of the dataset.
 """
 
@@ -20,7 +19,6 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
     df = pd.read_excel(file_path)
     return df
-
 # [DA1] Cleaning or manipulating data
 def clean_data(df):
     """Clean the London Pubs dataset."""
@@ -31,7 +29,6 @@ def clean_data(df):
     df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
     df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
     print("Null values in latitude column after cleaning:", df['latitude'].isnull().sum())
-
     return df
 
 # [PY2] A function that returns more than one value
@@ -55,16 +52,13 @@ def display_pubs(df, filtered_df):
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
         )
-
     # Display the updated map
     st.plotly_chart(fig)
 
-
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
-    """Get local authority options for selectbox."""
+    """Get local authority options for select box."""
     return {authority: authority for authority in df['local_authority'].unique()}
-
 # [DA5]
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
@@ -73,7 +67,6 @@ def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
     filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & (df['local_authority'] == authority_name)]
     print("Filtered dataframe shape:", filtered_df.shape)  # Debug print
     return filtered_df
-
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
 def main():
@@ -87,7 +80,7 @@ def main():
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
 
     # [DA2] Sorting data in ascending or descending order, by one or more columns
-    sorted_df = df.sort_values(by='name', ascending=True)
+    # sorted_df = df.sort_values(by='name', ascending=True)
 
     # [ST4] Page design features
     st.sidebar.header("Explore London Pubs")
@@ -181,6 +174,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
