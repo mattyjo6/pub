@@ -156,7 +156,8 @@ def main():
     df_unique = df[columns_to_include].drop_duplicates()
 
     # Create a pivot table to summarize the number of pubs by selected columns
-    pivot_table = df_unique.pivot_table(index=columns_to_include, aggfunc='first')
+    pivot_table = df_unique.pivot_table(index=columns_to_include, aggfunc=None)
+
 
     # Display the pivot table
     st.write("Pivot Table - Number of Pubs by Selected Columns")
