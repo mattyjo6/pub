@@ -79,9 +79,6 @@ def main():
     #  [ST1] Sidebar input for local authority
     authority_name = st.sidebar.selectbox("Select Local Authority", options=get_local_authority_options(df))
 
-    # [DA2] Sorting data in ascending or descending order, by one or more columns
-    # sorted_df = df.sort_values(by='name', ascending=True)
-
     # [ST4] Page design features
     st.sidebar.header("Explore London Pubs")
     st.sidebar.write("Select a local authority to view pubs on the map.")
