@@ -105,17 +105,7 @@ def main():
         st.subheader("Map of London Pubs")
         display_pubs(df, None)  # Pass None as filtered_df when not filtering
 
-    # Calculate the sum of pubs for each local authority
-    pub_counts = df['local_authority'].value_counts()
-    top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=1)
-
-    top_n_local_authorities = pub_counts.head(top_local_authorities)
-
-    # Create a DataFrame from the selected number of top local authorities and their pub counts
-    df_top_n = pd.DataFrame(
-        {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
-
-#     Calculate the sum of pubs for each local authority
+# Calculate the sum of pubs for each local authority
     pub_counts = df['local_authority'].value_counts()
     top_n = 15  # Set the default number of top local authorities to display
     top_n_local_authorities = pub_counts.head(top_n)
