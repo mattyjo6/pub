@@ -51,8 +51,12 @@ def display_pubs(df, filtered_df):
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
         )
+        # Remove the hovertemplate for markers that are not being hovered over
+        fig.update_traces(unselected=dict(marker=dict(hovertemplate=None)))
+
     # Display the updated map
     st.plotly_chart(fig)
+
 
 
 
