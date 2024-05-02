@@ -122,7 +122,7 @@ def main():
                      title="Distribution of Pubs by Local Authority")
         fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
         st.plotly_chart(fig)
-        st.write("This pie chart illustrates the distribution of pubs across different local authorities in London.")
+        st.write("This pie chart illustrates the distribution of pubs across different local authorities in London. It searches through the entire dataset and calculates what authorities contain the highest percent of pubs.")
     else:
         st.warning("No data available to display the pie chart.")
 
@@ -142,7 +142,7 @@ def main():
                               title="Distribution of Pubs by Postal Code Prefix")
         fig_postcode.update_traces(textinfo='percent+label', showlegend=True)
         st.plotly_chart(fig_postcode)
-        st.write("This pie chart shows the distribution of pubs in London based on the postal code prefixes.")
+        st.write("This pie chart shows the distribution of pubs in London based on the postal code prefixes. This provides a more vague area but still provides a unique way of analyzing the distribution of pubs across the U.K.")
     else:
         st.warning("No data available to display the pie chart for postal codes.")
 
@@ -155,7 +155,7 @@ def main():
         fig_names.update_yaxes(title_text="Number of Pubs")
 
         st.plotly_chart(fig_names)
-        st.write("This bar chart displays the top ten most popular pub names in London, along with their respective counts.")
+        st.write("This bar chart displays the top ten most popular pub names in London and tallies the how many pubs share these names. It is a unique and interesting fact that can be calculated from the dataset.")
     else:
         st.warning("No data available to display the bar chart for pub names.")
 
@@ -174,5 +174,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
