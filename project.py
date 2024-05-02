@@ -40,7 +40,7 @@ def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
     print("Displaying pubs...")  # Debug print
     # Create an interactive map using Plotly
-    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", text=df['name'] + ' - ' + df['address'], zoom=10, height=500)
+    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None:
@@ -51,7 +51,6 @@ def display_pubs(df, filtered_df):
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
         )
-    
     # Display the updated map
     st.plotly_chart(fig)
 
