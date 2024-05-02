@@ -40,19 +40,30 @@ def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
     print("Displaying pubs...")  # Debug print
     # Create an interactive map using Plotly
-    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", text=df['name'] + ' - ' + df['address'], zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
+
+    # Update the hovertemplate for both the original map and the filtered map
+    hover_template = "<b>%{hovertext}</b><br>Address: %{text}<extra></extra>"
+    fig.update_traces(
+        hovertemplate=hover_template
+    )
 
     if filtered_df is not None:
         # Update the existing map with markers for the filtered pubs
-        fig.update_traces(
+        fig.add_scattermapbox(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
-            customdata=filtered_df[['name', 'address']],
-            hovertemplate="<b>%{customdata[0]}</b><br>Address: %{customdata[1]}<extra></extra>",
+            text=filtered_df['name'] + ' - ' + filtered_df['address'],
+            hoverinfo='text',
+            mode='markers',
+            marker=dict(color='red'),
+            name='Filtered Pubs'
         )
+
     # Display the updated map
     st.plotly_chart(fig)
+
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
