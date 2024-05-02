@@ -40,23 +40,21 @@ def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
     print("Displaying pubs...")  # Debug print
     # Create an interactive map using Plotly
-    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
+    fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", text=df['name'] + ' - ' + df['address'], zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
 
     if filtered_df is not None:
         # Update the existing map with markers for the filtered pubs
-        fig.add_trace(go.Scattermapbox(
+        fig.update_traces(
             lat=filtered_df['latitude'],
             lon=filtered_df['longitude'],
-            text=filtered_df['name'] + ' - ' + filtered_df['address'],
-            hoverinfo='text',
-            mode='markers',
-            marker=dict(color='red'),
-            name='Filtered Pubs'
-        ))
-
+            customdata=filtered_df[['name', 'address']],
+            hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+        )
+    
     # Display the updated map
     st.plotly_chart(fig)
+
 
 
 
