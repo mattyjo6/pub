@@ -55,7 +55,6 @@ def display_pubs(df, filtered_df):
     st.plotly_chart(fig)
 
 
-
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for select box."""
