@@ -34,8 +34,8 @@ def clean_data(df):
 def filter_pubs_by_authority(df, authority_name):
     """Filter pubs by local authority."""
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
-# [VIZ1]
-# [PY3] A function that returns a value and is called in at least two different places in your program
+# [VIZ4]
+# [PY4] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
     # Create an interactive map using Plotly
@@ -49,11 +49,10 @@ def display_pubs(df, filtered_df):
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
-            hoverinfo="text",  # Only show hovertemplate when hovering over the data point
+            hoverinfo="text",  
         )
     # Display the updated map
     st.plotly_chart(fig)
-
 
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
@@ -129,7 +128,7 @@ def main():
     # Calculate the sum of pubs for each postal code
     df['postcode_prefix'] = df['postcode'].str[:2]  # Extract first two characters of postcode
     pub_counts_by_postcode = df['postcode_prefix'].value_counts().head(10)
-
+# [DA 7]
     # Create a DataFrame for the top ten postal codes and their pub counts
     df_top_10_postcodes = pd.DataFrame(
         {'postcode_prefix': pub_counts_by_postcode.index, 'pub_count': pub_counts_by_postcode.values})
