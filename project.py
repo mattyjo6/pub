@@ -105,7 +105,7 @@ def main():
         st.subheader("Map of London Pubs")
         display_pubs(df, None)  # Pass None as filtered_df when not filtering
 
-    # Display pie chart for top local authorities
+    # [VIZ1]
     st.subheader("Top Local Authorities with the Most Pubs")
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=2)
 
@@ -113,8 +113,7 @@ def main():
     df_top_n = pd.DataFrame({'local_authority': pub_counts.index, 'pub_count': pub_counts.values})
 
     if not df_top_n.empty:
-        fig = px.pie(df_top_n, names='local_authority', values='pub_count',
-                     title=f"Distribution of Pubs by Local Authority (Top {top_local_authorities})")
+        fig = px.pie(df_top_n, names='local_authority', values='pub_count', title=f"Distribution of Pubs by Local Authority (Top {top_local_authorities})")
         fig.update_traces(textinfo='percent+label', showlegend=True)
         st.plotly_chart(fig)
         st.write("This pie chart illustrates the distribution of pubs across different local authorities in London.")
