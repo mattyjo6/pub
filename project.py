@@ -105,26 +105,19 @@ def main():
         st.subheader("Map of London Pubs")
         display_pubs(df, None)  # Pass None as filtered_df when not filtering
 
-    # Calculate the sum of pubs for each local authority
-    pub_counts = df['local_authority'].value_counts()
-    top_n = 15  # Set the default number of top local authorities to display
-    top_n_local_authorities = pub_counts.head(top_n)
-
-    # Create a DataFrame from the selected number of top local authorities and their pub counts
-    df_top_n = pd.DataFrame(
-        {'local_authority': top_n_local_authorities.index, 'pub_count': top_n_local_authorities.values})
-
-    # [VIZ1] Pie chart
-    st.subheader(f"Top {top_n} Local Authorities with the Most Pubs")
-
+    # Display pie chart for top local authorities
+    st.subheader("Top Local Authorities with the Most Pubs")
     top_local_authorities = st.selectbox("Select number of top local authorities to display:", [5, 10, 15, 20], index=2)
 
-    if not df_top_n.empty:  # Check if the DataFrame is not empty
+    pub_counts = df['local_authority'].value_counts().head(top_local_authorities)
+    df_top_n = pd.DataFrame({'local_authority': pub_counts.index, 'pub_count': pub_counts.values})
+
+    if not df_top_n.empty:
         fig = px.pie(df_top_n, names='local_authority', values='pub_count',
-                 title="Distribution of Pubs by Local Authority")
-        fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
+                     title=f"Distribution of Pubs by Local Authority (Top {top_local_authorities})")
+        fig.update_traces(textinfo='percent+label', showlegend=True)
         st.plotly_chart(fig)
-         st.write("This pie chart illustrates the distribution of pubs across different local authorities in London. It searches through the entire dataset and calculates what authorities contain the highest percent of pubs.")
+        st.write("This pie chart illustrates the distribution of pubs across different local authorities in London.")
     else:
         st.warning("No data available to display the pie chart.")
 
