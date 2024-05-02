@@ -50,10 +50,10 @@ def display_pubs(df, filtered_df):
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+            hoverinfo="text",  # Only show hovertemplate when hovering over the data point
         )
     # Display the updated map
     st.plotly_chart(fig)
-
 
 
 
