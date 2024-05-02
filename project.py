@@ -38,7 +38,6 @@ def filter_pubs_by_authority(df, authority_name):
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df):
     """Display pubs on an interactive map."""
-    print("Displaying pubs...")  # Debug print
     # Create an interactive map using Plotly
     fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="name", zoom=10, height=500)
     fig.update_layout(mapbox_style="open-street-map")
@@ -50,9 +49,11 @@ def display_pubs(df, filtered_df):
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
+            hoverinfo="text",  # Only show hovertemplate when hovering over the data point
         )
     # Display the updated map
     st.plotly_chart(fig)
+
 
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
