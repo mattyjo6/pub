@@ -19,6 +19,7 @@ def load_data(file_path="open_pubs_10000_sample.xlsx"):
     """Load the London Pubs dataset."""
     df = pd.read_excel(file_path)
     return df
+
 # [DA1] Cleaning or manipulating data
 def clean_data(df):
     """Clean the London Pubs dataset."""
@@ -34,6 +35,7 @@ def clean_data(df):
 def filter_pubs_by_authority(df, authority_name):
     """Filter pubs by local authority."""
     return df[df['local_authority'] == authority_name], df['local_authority'].unique()
+
 # [VIZ4]
 # [PY4] A function that returns a value and is called in at least two different places in your program
 def display_pubs(df, filtered_df):
@@ -49,23 +51,21 @@ def display_pubs(df, filtered_df):
             lon=filtered_df['longitude'],
             customdata=filtered_df[['name', 'address']],
             hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>",
-            hoverinfo="text",  
+            hoverinfo="text",
         )
     # Display the updated map
     st.plotly_chart(fig)
-
 
 # [PY5] A dictionary where you write code to access its keys, values, or items
 def get_local_authority_options(df):
     """Get local authority options for select box."""
     return {authority: authority for authority in df['local_authority'].unique()}
+
 # [DA5]
 # [PY3] A function that returns a value and is called in at least two different places in your program
 def filter_pubs_by_name_and_authority(df, pub_name, authority_name):
     """Filter pubs by name and local authority."""
-    print("Filtering pubs by name:", pub_name, "and authority:", authority_name)  # Debug print
     filtered_df = df[(df['name'].str.contains(pub_name, case=False)) & (df['local_authority'] == authority_name)]
-    print("Filtered dataframe shape:", filtered_df.shape)  # Debug print
     return filtered_df
 
 # [ST1], [ST2], [ST3] At least three Streamlit different widgets
@@ -122,13 +122,15 @@ def main():
                      title="Distribution of Pubs by Local Authority")
         fig.update_traces(textinfo='percent+label', showlegend=True)  # Show percentage and label in the legend
         st.plotly_chart(fig)
+        st.write("This pie chart illustrates the distribution of pubs across different local authorities in London.")
     else:
         st.warning("No data available to display the pie chart.")
-# [DA9]
+
+    # [DA9]
     # Calculate the sum of pubs for each postal code
     df['postcode_prefix'] = df['postcode'].str[:2]  # Extract first two characters of postcode
     pub_counts_by_postcode = df['postcode_prefix'].value_counts().head(10)
-# [DA 7]
+
     # Create a DataFrame for the top ten postal codes and their pub counts
     df_top_10_postcodes = pd.DataFrame(
         {'postcode_prefix': pub_counts_by_postcode.index, 'pub_count': pub_counts_by_postcode.values})
@@ -140,6 +142,7 @@ def main():
                               title="Distribution of Pubs by Postal Code Prefix")
         fig_postcode.update_traces(textinfo='percent+label', showlegend=True)
         st.plotly_chart(fig_postcode)
+        st.write("This pie chart shows the distribution of pubs in London based on the postal code prefixes.")
     else:
         st.warning("No data available to display the pie chart for postal codes.")
 
@@ -147,12 +150,12 @@ def main():
     st.subheader("Top Ten Pub Names")
     pub_counts_by_name = df['name'].value_counts().head(10)
     if not pub_counts_by_name.empty:
-        fig_names = px.bar(pub_counts_by_name, x=pub_counts_by_name.index, y=pub_counts_by_name.values,
-                           title="")
+        fig_names = px.bar(pub_counts_by_name, x=pub_counts_by_name.index, y=pub_counts_by_name.values, title="")
         fig_names.update_xaxes(title_text="Pub Name")
         fig_names.update_yaxes(title_text="Number of Pubs")
 
         st.plotly_chart(fig_names)
+        st.write("This bar chart displays the top ten most popular pub names in London, along with their respective counts.")
     else:
         st.warning("No data available to display the bar chart for pub names.")
 
@@ -171,4 +174,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
